@@ -12,29 +12,42 @@ syntax clear
 syntax case match
 
 if exists("b:lognav_int_agent")
-  exe "syn match logNavIntAgent '".b:lognav_int_agent."'"
+  for elem in b:lognav_int_agent
+    exe "syn match logNavIntAgent '".elem."'"
+  endfor
 endif
 
 if exists("b:lognav_int_event")
-  exe "syn match logNavIntEvent '".b:lognav_int_event."'"
+  for elem in b:lognav_int_event
+    exe "syn match logNavIntEvent '".elem."'"
+  endfor
 endif
 
 if exists("b:lognav_ext_msg_start") && exists("b:lognav_ext_msg_end")
-  exe "syn region logNavExtMsg start='".b:lognav_ext_msg_start.
-        \ "' end='". b:lognav_ext_msg_end."' ".
-        \ 'contains=logNavExtEvent,logNavExtRec,logNavExtSent'
+  for i in range(min([len(b:lognav_ext_msg_start), len(b:lognav_ext_msg_end)]))
+    exe "syn region logNavExtMsg start='".b:lognav_ext_msg_start[i].
+          \ "' end='". b:lognav_ext_msg_end[i]."' ".
+          \ 'contains=logNavExtEvent,logNavExtRec,logNavExtSent'
+  endfor
 endif
 
 if exists("b:lognav_ext_rec")
-  exe "syn match logNavExtRec contained '".b:lognav_ext_rec."'"
+  for elem in b:lognav_ext_rec
+    exe "syn match logNavExtRec contained '".elem."'"
+  endfor
 endif
 
 if exists("b:lognav_ext_sent")
-  exe "syn match logNavExtSent contained '".b:lognav_ext_sent."'"
+  for elem in b:lognav_ext_sent
+    exe "syn match logNavExtSent contained '".elem."'"
+  endfor
 endif
 
-if exists('b:lognav_ext_event')
-  exe "syn match logNavExtEvent contained '".b:lognav_ext_event."'"
+
+if exists("b:lognav_ext_event")
+  for elem in b:lognav_ext_event
+    exe "syn match logNavExtEvent contained '".elem."'"
+  endfor
 endif
 
 
@@ -48,10 +61,10 @@ hi def link logNavExtSent  Question
 
 
 " sync method:
-if !exists('b:LogNavMinLines')
-  let b:LogNavMinLines = 50
+if !exists('b:lognav_min_lines')
+  let b:lognav_min_lines = 50
 endif
-exe 'syn sync ccomment logNavExtMsg minlines='.b:LogNavMinLines
+exe 'syn sync ccomment logNavExtMsg minlines='.b:lognav_min_lines
 
 
 let b:current_syntax = "LogNav"
