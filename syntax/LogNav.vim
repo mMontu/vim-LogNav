@@ -26,7 +26,8 @@ endif
 if exists("b:lognav_ext_msg_start") && exists("b:lognav_ext_msg_end")
   for i in range(min([len(b:lognav_ext_msg_start), len(b:lognav_ext_msg_end)]))
     exe "syn region logNavExtMsg start='".b:lognav_ext_msg_start[i].
-          \ "' end='". b:lognav_ext_msg_end[i]."' ".
+          \ "' end='". b:lognav_ext_msg_end[i].
+          \ (exists('b:lognav_fold_ext_msg') ? "' fold ": "' ").
           \ 'contains=logNavExtEvent,logNavExtRec,logNavExtSent'
   endfor
 endif
@@ -65,6 +66,12 @@ if !exists('b:lognav_min_lines')
   let b:lognav_min_lines = 50
 endif
 exe 'syn sync ccomment logNavExtMsg minlines='.b:lognav_min_lines
+
+
+" fold method:
+if (exists('b:lognav_fold_ext_msg'))
+  call LogNav#EnableFold()
+endif
 
 
 let b:current_syntax = "LogNav"
