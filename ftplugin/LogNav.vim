@@ -13,10 +13,14 @@ let s:cpo_save = &cpo
 set cpo-=C
 
 
-if exists ('b:lognav_dialog_start')
-  nnoremap <buffer> <silent> J :call LogNav#DialogStart('')<CR>
-  nnoremap <buffer> <silent> K :call LogNav#DialogStart('b')<CR>
-  nnoremap <buffer> <silent> L :call LogNav#LastDialogStart()<CR>
+if !hasmapto('<Plug>LogNavNextDialog')
+   nmap <buffer> J <Plug>LogNavNextDialog
+endif
+if !hasmapto('<Plug>LogNavPrevDialog')
+   nmap <buffer> K <Plug>LogNavPrevDialog
+endif
+if !hasmapto('<Plug>LogNavLastDialog')
+   nmap <buffer> L <Plug>LogNavLastDialog
 endif
 
 
