@@ -40,9 +40,12 @@ endfunction
 
 function! LogNav#EnableFold() " {{{1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Attempt to create/close folds based on syntax within a reasanoble ammount of
+" Attempt to create/close folds based on syntax within a reasonable amount of
 " time
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " clear existing folds in order to avoid error messages when using sessions
+  " and the files shrinks 
+  normal! zE
   setlocal foldmethod=syntax
   " restore foldmethod after the folds are formed, as it makes Vim became very
   " slow, as explained on Vim FAQ 29.7: 'I have enabled syntax based folding.
