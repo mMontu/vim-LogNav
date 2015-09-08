@@ -1,5 +1,5 @@
 " Vim syntax file
-" Maintainer: Marcelo Montu <https://github.com/mMontu/vim-LogNav>
+" Maintainer: Marcelo Montu
 
 " Quit when a (custom) syntax file was already loaded
 if exists("b:current_syntax")

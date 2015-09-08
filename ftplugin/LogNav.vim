@@ -1,5 +1,5 @@
 " Vim filetype plugin file
-" Maintainer: Marcelo Montu <https://github.com/mMontu/vim-LogNav>
+" Maintainer: Marcelo Montu
 
 if exists("b:did_ftplugin")
   finish
@@ -23,6 +23,8 @@ if !hasmapto('<Plug>LogNavLastDialog')
    nmap <buffer> L <Plug>LogNavLastDialog
 endif
 
+" a log file is usually written by an app, thus there is no need to edit it
+setlocal nomodifiable
 
 let &cpo = s:cpo_save
 unlet s:cpo_save

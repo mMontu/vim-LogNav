@@ -1,5 +1,5 @@
 " vim-LogNav: syntax highlight for generic log files
-" Maintainer: Marcelo Montu <https://github.com/mMontu/vim-LogNav>
+" Maintainer: Marcelo Montu
 
 let save_cpo = &cpo   " allow line continuation
 set cpo&vim
@@ -50,6 +50,37 @@ function! LogNav#EnableFold() " {{{1
   normal! zM
   setlocal foldmethod&
 endfunction
+
+function! LogNav#Sample() " {{{1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Uses a sample log file to display the intended use for this plugin
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  let logFile = split(globpath(&runtimepath, "**/" . 'LogNavSample1.log'), "\n")[0]
+  let config = split(globpath(&runtimepath, "**/" . 'LogNavSample1.vim'), "\n")[0]
+  exe 'source 'config
+  tabe
+  exe 'silent read '.logFile
+  1d
+  call s:setTempBuffer()
+  exe 'silent botright vnew '.logFile
+  edit
+  1   " move to ther first line
+  windo setlocal scrollbind
+
+  call LogNav#DialogStart('')
+endfunction
+
+function! s:setTempBuffer() " {{{1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Select settings of a temporary/scratch buffer
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+   setlocal buftype=nofile
+   setlocal bufhidden=delete
+   setlocal noswapfile
+   setlocal nomodifiable
+   setlocal textwidth=0 " avoid automatic line break
+endfunction
+
 
 
 let &cpo = save_cpo
