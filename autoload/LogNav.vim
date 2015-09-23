@@ -73,6 +73,17 @@ function! LogNav#Sample() " {{{1
   call LogNav#DialogStart('')
 endfunction
 
+function! LogNav#SampleConfig() " {{{1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Displays a sample configuration for this plugin
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  let config = split(globpath(&runtimepath, "**/" . 'LogNavSample1.vim'), "\n")[0]
+  exe 'silent botright new'
+  exe 'silent read '.config
+  1d
+  call s:setTempBuffer()
+endfunction
+
 function! s:setTempBuffer() " {{{1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Select settings of a temporary/scratch buffer

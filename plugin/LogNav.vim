@@ -8,6 +8,7 @@ let g:loaded_lognav = 1
 
 " Commands {{{1
 command! -bar -nargs=0 LogNavSample call LogNav#Sample()
+command! -bar -nargs=0 LogNavSampleConfig call LogNav#SampleConfig()
 
 " Mappings {{{1
 noremap <silent> <Plug>LogNavNextDialog :call LogNav#DialogStart('')<CR>
