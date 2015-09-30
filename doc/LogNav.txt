@@ -1,0 +1,227 @@
+*LogNav*          syntax highlight for generic log files
+==============================================================================
+|                                                                            |
+|   ooooo                             ooooo      ooo                         |
+|   `888'                             `888b.     `8'                         |
+|    888          .ooooo.   .oooooooo  8 `88b.    8   .oooo.   oooo    ooo   |
+|    888         d88' `88b 888' `88b   8   `88b.  8  `P  )88b   `88.  .8'    |
+|    888         888   888 888   888   8     `88b.8   .oP"888    `88..8'     |
+|    888       o 888   888 `88bod8P'   8       `888  d8(  888     `888'      |
+|   o888ooooood8 `Y8bod8P' `8oooooo.  o8o        `8  `Y888""8o     `8'       |
+|                          d"     YD                                         |
+|                          "Y88888P'                                         |
+|                                                                            |
+==============================================================================
+CONTENTS                                                       *LogNav-contents*
+
+    1. Intro........................................|LogNav-intro|
+    2. Commands.....................................|LogNav-commands|
+    3. Mappings.....................................|LogNav-mappings|
+    4. Configuration................................|LogNav-configuration|
+    5. About........................................|LogNav-about|
+
+==============================================================================
+INTRODUCTION                                                    *LogNav-intro*
+
+During debugging a significant amount of time is spent reading log files, in
+order to understand the system behavior. These files are usually large, thus
+reading and browsing it can quickly become a cumbersome and boring activity,
+specially if the text is only black and white.
+
+Vim provides syntax highlight for a large number of languages, configuration,
+and log files and provides features to allow the customization for new
+languages/file types, as explained in the user manual (|usr_44)|: >
+
+   Vim comes with highlighting for a couple of hundred different file types.
+   If the file you are editing isn't included, read this chapter to find out
+   how to get this type of file highlighted.
+
+Despite it is not difficult to enable syntax highlight for a new file type, it
+is a laborious and time consuming task. While the effort to write such
+customization for a popular and stable programming language is clearly
+worthwhile, the same is not true for a log file from a specific system which
+would only be used by a limited number of people, possibly for a short period
+of time.
+
+The purpose of this plugin is to provide a quick and easy way to setup a
+simple syntax highlighting, along some simple features to make it easier to
+read and browse large log files. 
+
+Some of the main features are:
+
+  1) display external messages received by the application on a different
+     color
+  2) emphasize the direction (send/receive) of exchanged messages
+  3) highlight specific events and handlers/threads
+  4) allow navigation between some configured identifiers, which can be useful
+     when several tests/operations are written to the same log file
+  5) uses colors from the current ColorScheme in order to reduce the
+     configuration effort
+  6) enables folding of external messages
+  7) make it easy to execute commands to refresh the log file
+
+
+RELATED WORKS								     *
+
+- LogViewer (vimscript #4156) helps to analyze multiple log files in parallel
+- multisearch.vim (vimscript #2826) allows highlighting multiple items, and
+  can be used as sort of "dynamic" syntax highlight, i.e., to manually
+  highlight relevant keywords
+
+There are also many syntax highlight plugins for popular types of log files:
+  * xchatlog.vim      (vimscript #315) : xchat
+  * syslog.vim        (vimscript #419) : sysklogd
+  * httpclog          (vimscript #833) : Apache "combined" log format
+  * procmail-log.vim  (vimscript #894) : Procmail
+  * updt.vim          (vimscript #1019): ClearCase update log
+  * cfengine-log.vim  (vimscript #1378): cfagent/cfengine
+  * irclog.vim        (vimscript #1629): XChat IRC
+  * javalog.vim       (vimscript #1921): java.util.logging
+  * apachelogs.vim    (vimscript #2268): Apache
+  * db2diaglog        (vimscript #2726): IBM DB2 diagnostic
+  * httplog.vim       (vimscript #3008): HTTP servers (Apache, nginx)
+  * jbosslog          (vimscript #3353): Jboss
+  * ipclog.vim        (vimscript #3483): Informatica Power Center
+  * pacmanlog.vim     (vimscript #3577): Arch Linux's package manager
+  * log4j.vim         (vimscript #4111): log4j and log4php
+  * log4perl          (vimscript #4128): Log::Log4perl
+  * texlog.vim        (vimscript #4421): TeX/LaTeX
+  * logsyntax.vim     (vimscript #5172): HTTP (IIS format, NCSA, W3C)
+  * log4j highlighter (vimscript #5241): log4j
+
+
+
+==============================================================================
+COMMANDS                                                *LogNav-commands*
+
+                                                        *:LogNavSample*
+:LogNavSample           Displays a sample log file using a basic LogNav
+                        configuration on a new |tabpage|.
+
+                                                        *:LogNavSampleConfig*
+:LogNavSampleConfig     Displays a sample LogNav configuration.
+
+==============================================================================
+KEY MAPPINGS                                                    *LogNav-mappings*
+
+By default, LogNav adds the following mappings on log buffers:
+>
+   J            <Plug>LogNavNextDialog
+                Move to the start of next dialog/block of actions
+
+   K            <Plug>LogNavPrevDialog
+                Move to the start of preivous dialog/block of actions
+
+   L            <Plug>LogNavLastDialog
+                Move to the start of last dialog/block of actions (after
+                reading again the log file if b:lognav_update_cmd is set)
+
+You can use different mappings by mapping to the <Plug>LogNav... mappings on
+the before the 'filetype' is set (either on the |.vimrc| or on the LogNav
+configuration for a given log type).
+
+Note that the mappings are valid only when |b:lognav_dialog_start| is defined.
+
+==============================================================================
+CONFIGURATION                                            *LogNav-configuration*
+
+The plugin can be configured using the following structure: 
+>
+   augroup LogNavSample
+      au!
+      autocmd BufRead,BufNewFile <filePattern 1> 
+               \ let b:lognav_int_agent     = ['<regex1>', '<regex2>'] |
+               \ let b:lognav_int_event     = ['<regex3>'] |
+               \ let b:lognav_ext_msg_start = ['<regex4>'] |
+               \ let b:lognav_ext_msg_end   = ['<regex5>'] |
+               \ let b:lognav_ext_rec       = ['<regex6>'] |
+               \ let b:lognav_ext_sent      = ['<regex7>'] |
+               \ let b:lognav_ext_event     = ['<regex8>'] |
+               \ let b:lognav_dialog_start  = '<regex9>' |
+               \ setfiletype LogNav
+
+      autocmd BufRead,BufNewFile <filePattern 2> 
+               :
+               :
+   augroup END
+<
+Any option may be omitted.
+
+                           *'b:lognav_int_agent'* *'b:lognav_int_event'*
+                           *'b:lognav_ext_msg_start'* *'b:lognav_ext_msg_end'*
+                           *'b:lognav_ext_rec'* *'b:lognav_ext_sent'*
+                           *'b:lognav_ext_event'*
+
+The syntax highlight elements are defined by lists of |pattern|s. The idea is
+to create a clear distinction between messages generated by the
+threads/handlers on the application and those sent/received to/from external
+entities. It is possible to highlight "agents" and "events" along some
+"direction indicators".
+
+| -----------------------|------------------------------------------------ |
+| option                 | description                                     |
+| -----------------------|------------------------------------------------ |
+| b:lognav_int_agent     | identifiers of *internal* threads/handlers        |
+| b:lognav_int_event     | identifiers of *internal* events/messages         |
+| b:lognav_ext_msg_start | indicate the start of an *external* message       |
+| b:lognav_ext_msg_end   | indicate the end of an *external* message         |
+| b:lognav_ext_rec       | identify that a *external* message was received   |
+| b:lognav_ext_sent      | identify that a *external* message was sent       |
+| b:lognav_ext_event     | identifiers of *external* events/messages         |
+| -----------------------|------------------------------------------------ |
+
+
+                                                      *'b:lognav_dialog_start'*
+A |pattern| that can be used to navigate between dialog/block of actions. It
+is useful to browse large log files containing repeated sets of tests.
+
+
+                                                      *'b:lognav_update_cmd'*
+This variable holds a command to be used to update the log file. It can be
+a simple |:edit| command, or a |system()| call that runs scp/rsync to retrieve
+the updated log from a remote machine. If it is defined it will be executed
+by the <Plug>LogNavLastDialog mapping.
+
+                                                            *'LogNav-Colors'*
+
+By default the syntax highlight uses the standard |highlight-groups|: >
+
+   hi def link logNavIntAgent Statement
+   hi def link logNavIntEvent Special
+   hi def link logNavExtMsg   Comment
+   hi def link logNavExtEvent Type
+   hi def link logNavExtRec   ModeMsg
+   hi def link logNavExtSent  Question
+
+To change them insert the custom colors on the |.vimrc| and restart Vim.
+
+
+                                                         *'b:lognav_min_lines'*
+This option is related to how Vim applies the syntax highlighting. The details
+are explained in |:syn-sync|, and this option affects |:syn-sync-minlines|.
+
+By default it is set to 50. If you experience incorrect syntax highlight when
+browsing large files, which are corrected after scrolling a couple of screens
+up and down, try increasing this value.
+
+                                                      *'b:lognav_fold_ext_msg'*
+Sometimes the external messages occupy a significant amount of screen space
+while adding little information. In these cases it may be useful to |fold| the
+external messages: >
+
+            \ let b:lognav_fold_ext_msg = 1 |
+
+Note folding based on syntax is very slow in Vim, so it is disable by default.
+For the cases where it is worth, try keeping the log file small. It will take
+a while to create the folds every time the file is loaded.
+
+==============================================================================
+ABOUT                                                           *LogNav-about*
+
+Repository and Bug Tracker:
+https://github.com/mMontu/vim-LogNav
+
+
+Distributed under the same terms as Vim itself. See |license|.
+
+vim:tw=78:ts=8:ft=help:norl:
