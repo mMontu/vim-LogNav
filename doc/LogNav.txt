@@ -55,7 +55,7 @@ Some of the main features are:
   3) highlight specific events and handlers/threads
   4) allow navigation between some configured identifiers, which can be useful
      when several tests/operations are written to the same log file
-  5) uses colors from the current ColorScheme in order to reduce the
+  5) uses colors from the current color scheme in order to reduce the
      configuration effort
   6) enables folding of external messages
   7) make it easy to execute commands to refresh the log file
