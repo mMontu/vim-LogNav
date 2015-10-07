@@ -12,7 +12,11 @@ function! LogNav#DialogStart(direction) " {{{1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " move the cursor and highlight the line of the next/previous block/dialog
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  if search(b:lognav_dialog_start, 'W'.a:direction)
+  if !exists('b:lognav_dialog_start')
+    echohl Question
+    echomsg s:PLUGIN_TAG."b:lognav_dialog_start is not defined!"
+    echohl None
+  elseif search(b:lognav_dialog_start, 'W'.a:direction)
     match none			" delete existing highlight
     exe 'match SpellLocal /\%' . line(".") . 'l.*/' 
   else
