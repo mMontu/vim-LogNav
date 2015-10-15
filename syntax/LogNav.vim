@@ -12,42 +12,42 @@ syntax clear
 syntax case match
 
 if exists("b:lognav_int_agent")
-  for elem in b:lognav_int_agent
-    exe "syn match logNavIntAgent '".elem."'"
+  for s:elem in b:lognav_int_agent
+    exe "syn match logNavIntAgent '".s:elem."'"
   endfor
 endif
 
 if exists("b:lognav_int_event")
-  for elem in b:lognav_int_event
-    exe "syn match logNavIntEvent '".elem."'"
+  for s:elem in b:lognav_int_event
+    exe "syn match logNavIntEvent '".s:elem."'"
   endfor
 endif
 
 if exists("b:lognav_ext_msg_start") && exists("b:lognav_ext_msg_end")
-  for i in range(min([len(b:lognav_ext_msg_start), len(b:lognav_ext_msg_end)]))
-    exe "syn region logNavExtMsg start='".b:lognav_ext_msg_start[i].
-          \ "' end='". b:lognav_ext_msg_end[i].
+  for s:i in range(min([len(b:lognav_ext_msg_start), len(b:lognav_ext_msg_end)]))
+    exe "syn region logNavExtMsg start='".b:lognav_ext_msg_start[s:i].
+          \ "' end='". b:lognav_ext_msg_end[s:i].
           \ (exists('b:lognav_fold_ext_msg') ? "' fold ": "' ").
           \ 'contains=logNavExtEvent,logNavExtRec,logNavExtSent'
   endfor
 endif
 
 if exists("b:lognav_ext_rec")
-  for elem in b:lognav_ext_rec
-    exe "syn match logNavExtRec contained '".elem."'"
+  for s:elem in b:lognav_ext_rec
+    exe "syn match logNavExtRec contained '".s:elem."'"
   endfor
 endif
 
 if exists("b:lognav_ext_sent")
-  for elem in b:lognav_ext_sent
-    exe "syn match logNavExtSent contained '".elem."'"
+  for s:elem in b:lognav_ext_sent
+    exe "syn match logNavExtSent contained '".s:elem."'"
   endfor
 endif
 
 
 if exists("b:lognav_ext_event")
-  for elem in b:lognav_ext_event
-    exe "syn match logNavExtEvent contained '".elem."'"
+  for s:elem in b:lognav_ext_event
+    exe "syn match logNavExtEvent contained '".s:elem."'"
   endfor
 endif
 
