@@ -88,6 +88,19 @@ function! LogNav#SampleConfig() " {{{1
   call s:setTempBuffer()
 endfunction
 
+function! LogNav#Clean() " {{{1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" executes the commands defined in b:lognav_clean_cmd
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  if !exists('b:lognav_clean_cmd')
+    echohl Question
+    echomsg s:PLUGIN_TAG."b:lognav_clean_cmd is not defined!"
+    echohl None
+  else
+    exe b:lognav_clean_cmd
+  endif
+endfunction
+
 function! s:setTempBuffer() " {{{1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Select settings of a temporary/scratch buffer

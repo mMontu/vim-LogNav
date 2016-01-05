@@ -14,5 +14,6 @@ command! -bar -nargs=0 LogNavSampleConfig call LogNav#SampleConfig()
 noremap <silent> <Plug>LogNavNextDialog :call LogNav#DialogStart('')<CR>
 noremap <silent> <Plug>LogNavPrevDialog :call LogNav#DialogStart('b')<CR>
 noremap <silent> <Plug>LogNavLastDialog :call LogNav#LastDialogStart()<CR>
+noremap <silent> <Plug>LogNavClean :call LogNav#Clean()<CR>
 
 " vim: ts=2 sts=0 sw=2 expandtab ff=unix foldmethod=marker :

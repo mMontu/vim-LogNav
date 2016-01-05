@@ -23,6 +23,10 @@ if !hasmapto('<Plug>LogNavLastDialog')
    nmap <buffer> L <Plug>LogNavLastDialog
 endif
 
+if !hasmapto('<Plug>LogNavClean')
+   nmap <buffer> C <Plug>LogNavClean
+endif
+
 " a log file is usually written by an app, thus there is no need to edit it
 setlocal nomodifiable
 

@@ -101,6 +101,10 @@ COMMANDS                                                *LogNav-commands*
                                                         *:LogNavSampleConfig*
 :LogNavSampleConfig     Displays a sample LogNav configuration.
 
+                                                        *:LogNavClean*
+:LogNavClean            Erase the log file by executing the command specified
+                        in b:lognav_clean_cmd
+
 ==============================================================================
 KEY MAPPINGS                                                    *LogNav-mappings*
 
@@ -115,6 +119,9 @@ By default, LogNav adds the following mappings on log buffers:
    L            <Plug>LogNavLastDialog
                 Move to the start of last dialog/block of actions (after
                 reading again the log file if b:lognav_update_cmd is set)
+
+   C            <Plug>LogNavClean
+                Executes :LogNavClean
 
 You can use different mappings by mapping to the <Plug>LogNav... mappings on
 the before the 'filetype' is set (either on the |.vimrc| or on the LogNav
