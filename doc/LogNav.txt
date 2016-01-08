@@ -222,6 +222,14 @@ Note folding based on syntax is very slow in Vim, so it is disable by default.
 For the cases where it is worth, try keeping the log file small. It will take
 a while to create the folds every time the file is loaded.
 
+As explained on Vim FAQ 29.7: 'I have enabled syntax based folding. Why is Vim
+so slow?', it is necessary to change the 'foldmethod' to "manual" after the
+folds are created. This may cause problems when using sessions if the log file
+is updated while Vim is closed (unaccurate folds/error messages if the file
+shrinks). Unfortunately there is no workaround for this, as chaging the
+'foldmethod' or executing 'normal! Ze' on |VimLeavePre| autocmd doesn't have
+any effect on |:mksession|.
+
 ==============================================================================
 ABOUT                                                           *LogNav-about*
 
